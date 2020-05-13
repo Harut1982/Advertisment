@@ -67,7 +67,7 @@ public class AdvertisementMain implements Commands {
             } else {
                 System.out.println("User already exists!");
             }
-        } catch (ArrayIndexOutOfBoundsException | IOException | IllegalArgumentException e) {
+        } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e) {
             System.out.println("Wrong Data!");
 
         }

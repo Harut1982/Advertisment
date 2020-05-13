@@ -18,14 +18,14 @@ public class DataStorage {
     private Map<String, User> userMap = new HashMap<>();
     private List<Item> items = new ArrayList<>();
 
-    public void add(User user) throws IOException {
+    public void add(User user)  {
         userMap.put(user.getPhoneNumber(), user);
         FileUtil.serializeUserMap(userMap);
 
 
     }
 
-    public void add(Item item) throws IOException {
+    public void add(Item item)  {
         item.setId(itemId++);
         items.add(item);
         FileUtil.serializeItemList(items);
@@ -86,33 +86,33 @@ public class DataStorage {
         }
     }
 
-    public void deleteItemsByUser(User user) throws IOException, ClassNotFoundException {
+    public void deleteItemsByUser(User user)  {
 
         items.removeIf(next -> next.getUser().equals(user));
-        FileUtil.deserializeUserMap();
+        FileUtil.serializeItemList(items);
 
     }
 
-    public void deleteItemsById(long id) throws IOException, ClassNotFoundException {
-        try {
+    public void deleteItemsById(long id)  {
+
             items.remove(getItemById(id));
-            FileUtil.deserializeItemList();
-        } catch (EOFException e) {
-            e.printStackTrace();
+        FileUtil.serializeItemList(items);
+
+
 
         }
 
-    }
 
-    public void initData() throws IOException, ClassNotFoundException {
-        try {
+
+    public void initData() {
+
             userMap = FileUtil.deserializeUserMap();
             items = FileUtil.deserializeItemList();
-            itemId++;
-        } catch (EOFException e) {
-            System.out.println("The file is empty");
+            if (items!=null&&!items.isEmpty()){
+                Item item = items.get(items.size() - 1);
+                itemId=item.getId()+1;
+            }
         }
 
 
-    }
 }
